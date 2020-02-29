@@ -5,19 +5,19 @@ function movesAway = knightPathCount(boardX, boardY, kPos, endPos)
     kBoard(kPos(1), kPos(2)) = -1;
     endBoard(endPos(1), endPos(2)) = -1;
     kMoves = 0;
-    negMoves = 0;
+    endMoves = 0;
     
     while true
         kBoard = step(kBoard, kMoves);
         kMoves = kMoves +1;
         if find((kBoard~=0).*(endBoard~=0))
-            movesAway = kMoves+negMoves; return;
+            movesAway = kMoves+endMoves; return;
         end
         
-        endBoard = step(endBoard, negMoves);
-        negMoves = negMoves +1;
+        endBoard = step(endBoard, endMoves);
+        endMoves = endMoves +1;
         if find((kBoard~=0).*(endBoard~=0))
-            movesAway = kMoves+negMoves; return;
+            movesAway = kMoves+endMoves; return;
         end
         
     end  
@@ -28,13 +28,14 @@ function newBoard = step(board, movesAway)
         for y = 1:size(board, 2)
             if movesAway == 0
                 if board(x,y) == -1
-                    newBoard = branch(board, x, y, movesAway + 1);
+                    board = branch(board, x, y, movesAway + 1);
                 end
             elseif board(x,y) == movesAway
-                    newBoard = branch(board, x, y, movesAway + 1);  
+                    board = branch(board, x, y, movesAway + 1);  
             end
         end
     end
+    newBoard = board;
 end
 
 function newBoard = branch(board, x, y, setMove)
